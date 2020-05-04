@@ -28,9 +28,9 @@ import java.security.ProtectionDomain;
 public class AtmTransformer implements ClassFileTransformer {
 
 private static final Logger      LOGGER = LoggerFactory.getLogger(AtmTransformer.class.getSimpleName());
-/** The internal form class name of the class to transform */
+/** The internal form class name of the class to transform. */
 private final        String      targetClassName;
-/** The class loader of the class we want to transform */
+/** The class loader of the class we want to transform. */
 private final        ClassLoader targetClassLoader;
 
 public AtmTransformer(String targetClassName, ClassLoader targetClassLoader) {

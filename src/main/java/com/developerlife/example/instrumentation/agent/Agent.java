@@ -39,7 +39,7 @@ public static void agentmain(String agentArgs, Instrumentation inst) {
 private static void transformClass(String className, Instrumentation instrumentation) {
   Class<?> targetCls = null;
   ClassLoader targetClassLoader = null;
-  // see if we can get the class using forName
+  // See if we can get the class using forName.
   try {
     targetCls = Class.forName(className);
     targetClassLoader = targetCls.getClassLoader();
