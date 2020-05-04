@@ -3,24 +3,20 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Resources](#resources)
 - [Running this on your machine](#running-this-on-your-machine)
 - [Notes on building this project](#notes-on-building-this-project)
   - [What goes where](#what-goes-where)
   - [Building the agent using Maven](#building-the-agent-using-maven)
+- [Resources](#resources)
+  - [Tutorials on building Java agents](#tutorials-on-building-java-agents)
+  - [Background on Java bytecode generation](#background-on-java-bytecode-generation)
+  - [Background information on the instrumentation API](#background-information-on-the-instrumentation-api)
+  - [Background information on agents](#background-information-on-agents)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 This project shows how to use the Java instrumentation API to add some runtime monitoring to an already created and
 running application using byte code generation.
-
-## Resources
-
-- [Guide to Java Instrumentation (lacking lots of details)](https://www.baeldung.com/java-instrumentation)
-- [Repo of samples "core-java-jvm" on GitHub (lacking lots of details)](https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-jvm)
-- [Maven clean and install](https://stackoverflow.com/a/20122552/2085356)
-- [Example of using maven to package an agent](https://dhruba.wordpress.com/2010/02/07/creation-dynamic-loading-and-instrumentation-with-javaagents/)
-- [Example of using IDEA and maven to build an agent](https://stackify.com/what-are-java-agents-and-how-to-profile-with-them/)
 
 ## Running this on your machine
 
@@ -89,3 +85,67 @@ generates some really helpful debug messages during compilation and packaging th
 ```shell script
 mvn clean install -X
 ```
+
+## Resources
+
+### Tutorials on building Java agents
+
+- [Guide to Java Instrumentation (lacking lots of details)](https://www.baeldung.com/java-instrumentation)
+- [Repo of samples "core-java-jvm" on GitHub (lacking lots of details)](https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-jvm)
+- [Maven clean and install](https://stackoverflow.com/a/20122552/2085356)
+- [Example of using maven to package an agent](https://dhruba.wordpress.com/2010/02/07/creation-dynamic-loading-and-instrumentation-with-javaagents/)
+- [Example of using IDEA and maven to build an agent](https://stackify.com/what-are-java-agents-and-how-to-profile-with-them/)
+
+### Background on Java bytecode generation
+
+- [Tutorial on using bytecode generation via Javassist library](https://www.baeldung.com/javassist)
+- [Javaassist library](http://www.javassist.org/)
+
+### Background information on the instrumentation API
+
+- [Javadocs: instrumentation API](https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/Instrumentation.html)
+
+Basically, the API allows adding code before or after already existing code (w/out modifying any of the existing code
+itself). Or you can simply swap out entire classes. Here's a short list of things you can do with this API:
+
+1. `addTransformer` – adds a transformer to the instrumentation engine
+2. `getAllLoadedClasses` – returns an array of all classes currently loaded by the JVM
+3. `retransformClasses` – facilitates the instrumentation of already loaded classes by adding byte-code
+4. `removeTransformer` – unregisters the supplied transformer
+5. `redefineClasses` – redefine the supplied set of classes using the supplied class files, meaning that the class will
+   be fully replaced, not modified as with `retransformClasses`
+
+Sample project that shows how to use this (and agents from the section below):
+[repo](https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-jvm).
+
+### Background information on agents
+
+In general, a java agent is just a specially crafted jar file. It utilizes the
+[Instrumentation API](https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/Instrumentation.html) that the JVM
+provides to alter existing byte-code that is loaded in a JVM.
+
+For an agent to work, we need to define two methods:
+
+- `premain` – will **statically** load the agent using `-javaagent` parameter at JVM startup. Static load modifies the
+  byte-code at startup time before any code is executed.
+- `agentmain` – will **dynamically** load the agent into an already running JVM using the
+  [Java Attach API](https://docs.oracle.com/javase/7/docs/jdk/api/attach/spec/com/sun/tools/attach/package-summary.html)
+
+Basics, IDE specific guides, API references:
+
+- [Tutorial: Basic Java Agent in IDEA](https://stackify.com/what-are-java-agents-and-how-to-profile-with-them/)
+- [Tutorial: Basic Java Agent](https://www.developer.com/java/data/what-is-java-agent.html)
+- [JDK5 instrumentation API](https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html)
+
+Good tutorials & slides (these give an idea of what can be done w/ agents):
+
+- [Tutorial: Guide to Java instrumentation](https://www.baeldung.com/java-instrumentation)
+- [Slide deck on Java agents](https://speakerdeck.com/shelajev/taming-javaagents-bcn-jug-2015)
+- [Tutorial: Quick intro to Java agents](https://www.jrebel.com/blog/how-write-javaagent)
+- [Tutorial: Quick intro to Java agents](https://www.javacodegeeks.com/2015/09/java-agents.html)
+- [Tutorial: Quick intro to Java agents](https://javapapers.com/core-java/java-instrumentation/)
+- [Tutorial: Quick intro to Java agents](https://www.javamex.com/tutorials/memory/instrumentation.shtml)
+
+Interesting libraries related to agents (good to look at source):
+
+- [Extensible java agent framework](https://github.com/brutusin/instrumentation)
