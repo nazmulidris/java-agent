@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Premain-Class: com.developerlife.example.instrumentation.agent.Agent
+Agent-Class: com.developerlife.example.instrumentation.agent.Agent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
