@@ -156,7 +156,7 @@
 
     <!-- Testing. -->
     <assertj.version>3.6.1</assertj.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
 
     <!-- Instrumentation. -->
     <javaassist.version>3.21.0-GA</javaassist.version>
