@@ -160,7 +160,7 @@
 
     <!-- Instrumentation. -->
     <javaassist.version>3.21.0-GA</javaassist.version>
-    <esapi.version>2.1.0.1</esapi.version>
+    <esapi.version>2.5.2.0</esapi.version>
     <sun.tools.version>1.8.0</sun.tools.version>
     <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
 
